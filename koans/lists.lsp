@@ -23,8 +23,8 @@
         (some-evens nil))
     (setf fruits '(orange pomello clementine))
     (setf some-evens (list (* 2 1) (* 2 2) (* 2 3)))
-    (assert-equal fruits ___)
-    (assert-equal ___ (length fruits))))
+    (assert-equal fruits '(orange pomello clementine))
+    (assert-equal 3 (length fruits))))
 
 
 (define-test test-list-cons
@@ -35,15 +35,15 @@
       (assert-equal '(:one) nums)
 
       (setf nums (cons :two nums))
-      (assert-equal ___ nums)
+      (assert-equal '(:two :one) nums)
 
       "lists can contain anything, even mixtures of different things"
       (setf nums (cons 333 nums))
-      (assert-equal ___ nums)
+      (assert-equal '(333 :two :one) nums)
 
       "lists can of course contain lists"
       (setf nums (cons '("the" "rest") nums))
-      (assert-equal ___ nums)))
+      (assert-equal '(("the" "rest") 333 :two :one) nums)))
 
 
 (define-test test-push-pop
