@@ -50,8 +50,17 @@
 ; Your goal is to write the score method.
 
 (defun score (dice)
-  ; You need to write this method
-)
+  (let ((score-hash (make-hash-table))
+        (sum-value 0))
+    (dolist (d dice)
+      (setf (gethash d score-hash) (1+ (gethash d score-hash 0))))
+    (maphash (lambda (k v)
+               (cond
+                 ((eq k 1) (setf sum-value (+ sum-value (* 1000 (floor (/ v 3))) (* 100 (if (>= v 3) (- v 3) v )))))
+                 ((eq k 5) (setf sum-value (+ sum-value (* 100 k (floor (/ v 3))) (* 50 (if (>= v 3) (- v 3) v )))))
+                 (t (setf sum-value (+ sum-value (* 100 k (floor (/ v 3))) )))
+                 )) score-hash)
+    sum-value))
 
 (define-test test-score-of-an-empty-list-is-zero
     (assert-equal 0 (score nil)))
