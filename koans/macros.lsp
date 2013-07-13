@@ -136,18 +136,24 @@
 (defvar *log-with-value* nil)
 
 ;; you must write this macro
+;; (defmacro log-form-with-value (&body body)
+;;   "records the body form, and the form's return value
+;;    to the list *log-with-value* and then evalues the body normally"
+;;   (let ((logform (gensym)))
+;;   `(let* ((retval ,@body)
+;;          (,logform retval))
+     
+;;      (push `(:form ,',@body :value ,logform) *log-with-value*)
+
+;;      retval)))
+
 (defmacro log-form-with-value (&body body)
   "records the body form, and the form's return value
    to the list *log-with-value* and then evalues the body normally"
-  (let ((logform (gensym)))
-  `(let* ((retval ,@body)
-         (,logform retval))
-     
-     (push `(:form ,',@body :value ,logform) *log-with-value*)
-
-     retval))
-
-
+  (let ((val (gensym)))
+    `(let ((,val ,@body))
+       (push (list :form ',@body :value ,val) *log-with-value*)
+       ,val)))
 
 (define-test test-log-form-and-value
     "log should start out empty"
